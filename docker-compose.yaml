@@ -1,0 +1,26 @@
+version: '3.9'
+
+services:
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus-container
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./config/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - prometheus-grafana-network
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana-container
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    networks:
+      - prometheus-grafana-network
+
+networks:
+  prometheus-grafana-network:
